@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ViralLab</title>
+    <style>
+        :root {
+            --bg: #0f1220;
+            --card: #171a2b;
+            --muted: #9aa4b2;
+            --text: #e7ecf3;
+            --accent: #7c5cff;
+            --accent-2: #26c6da;
+            --ok: #22c55e;
+            --warn: #f59e0b;
+            --shadow: 0 8px 30px rgba(0, 0, 0, .35)
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html,
+        body {
+            margin: 0;
+            height: 100%;
+            font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+            background: radial-gradient(1200px 800px at 10% -10%, #1b1f36 0%, #0f1220 55%, #0b0e18 100%);
+            color: var(--text)
+        }
+
+        .app {
+            max-width: 1100px;
+            margin: 24px auto;
+            padding: 20px
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+            margin-bottom: 18px
+        }
+
+        header .logo {
+            width: 42px;
+            height: 42px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            box-shadow: var(--shadow)
+        }
+
+        h1 {
+            font-size: clamp(20px, 2.8vw, 34px);
+            margin: 0
+        }
+
+        .sub {
+            color: var(--muted)
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 14px
+        }
+
+        .card {
+            background: linear-gradient(180deg, rgba(255, 255, 255, .04), transparent);
+            border: 1px solid rgba(255, 255, 255, .08);
+            backdrop-filter: blur(6px);
+            border-radius: 18px;
+            box-shadow: var(--shadow)
+        }
+
+        .card>.inner {
+            padding: 16px
+        }
+
+        .card h3 {
+            margin: 0 0 10px;
+            font-size: 16px;
+            color: #dbe2ea
+        }
+
+        label {
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 6px
+        }
+
+        input[type=text],
+        input[type=number],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, .12);
+            background: #0f1324;
+            color: var(--text);
+            outline: none
+        }
+
+        textarea {
+            min-height: 90px;
+            resize: vertical
+        }
+
+        .row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap
+        }
+
+        .btn {
+            appearance: none;
+            border: 0;
+            border-radius: 14px;
+            padding: 10px 14px;
+            color: white;
+            background: linear-gradient(135deg, var(--accent), #5a3bff);
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            font-weight: 600
+        }
+
+        .btn.secondary {
+            background: #222a45
+        }
+
+        .btn.ghost {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, .14)
+        }
+
+        .btn.ok {
+            background: linear-gradient(135deg, #1db954, #13a85a)
+        }
+
+        .btn.warn {
+            background: linear-gradient(135deg, #f59e0b, #f97316)
+        }
+
+        .kpis {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px
+        }
+
+        .kpi {
+            padding: 12px;
+            border-radius: 14px;
+            background: #12162a;
+            border: 1px dashed rgba(255, 255, 255, .12)
+        }
+
+        .kpi .v {
+            font-size: 20px;
+            font-weight: 700
+        }
+
+        .tag {
+            display: inline-flex;
+            gap: 6px;
+            align-items: center;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: #1b2140;
+            border: 1px solid rgba(255, 255, 255, .1);
+            font-size: 12px;
+            color: #cfd7e6
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 8px 0 6px
+        }
+
+        .mono {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 12px
+        }
+
+        .list {
+            display: grid;
+            gap: 8px
+        }
+
+        .list .item {
+            padding: 10px;
+            border: 1px dashed rgba(255, 255, 255, .14);
+            border-radius: 12px;
+            background: #12162a
+        }
+
+        .pillbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px
+        }
+
+        .footer {
+            opacity: .7;
+            font-size: 12px;
+            margin-top: 12px
+        }
+
+        /* layout */
+        .col-span-12 {
+            grid-column: span 12
+        }
+
+        .col-span-8 {
+            grid-column: span 8
+        }
+
+        .col-span-6 {
+            grid-column: span 6
+        }
+
+        .col-span-4 {
+            grid-column: span 4
+        }
+
+        .col-span-3 {
+            grid-column: span 3
+        }
+
+        @media (max-width:980px) {
+
+            .col-span-8,
+            .col-span-6,
+            .col-span-4,
+            .col-span-3 {
+                grid-column: span 12
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app">
+        <header>
+            <div class="logo"></div>
+            <div>
+                <h1>Générateur d'idées & Kit vidéo réseaux sociaux</h1>
+                <div class="sub">Tout-en-un : idées, scripts, plans de prise de vue, titres, miniatures, hashtags,
+                    checklists, planning.</div>
+            </div>
+        </header>
+
+        <div class="grid">
+            <!-- CONTROLS -->
+            <section class="card col-span-8">
+                <div class="inner">
+                    <div class="section-title">
+                        <h3>1) Brief rapide</h3><button class="btn ghost" id="btn-exemple">Remplir un exemple</button>
+                    </div>
+                    <div class="grid" style="grid-template-columns:repeat(12,1fr);gap:10px">
+                        <div class="col-span-6">
+                            <label>Plateforme</label>
+                            <select id="platform">
+                                <option>TikTok</option>
+                                <option>Instagram Reels</option>
+                                <option>YouTube Shorts</option>
+                                <option>LinkedIn</option>
+                                <option>X (Twitter)</option>
+                            </select>
+                        </div>
+                        <div class="col-span-6">
+                            <label>Objectif</label>
+                            <select id="goal">
+                                <option value="awareness">Notoriété</option>
+                                <option value="traffic">Trafic</option>
+                                <option value="leads">Leads</option>
+                                <option value="sales">Ventes</option>
+                                <option value="community">Communauté</option>
+                            </select>
+                        </div>
+                        <div class="col-span-6">
+                            <label>Créneau / niche</label>
+                            <input id="niche" type="text"
+                                placeholder="ex: fitness à la maison, cuisine rapide, dev, voyage budget..." />
+                        </div>
+                        <div class="col-span-3">
+                            <label>Durée cible (s)</label>
+                            <input id="length" type="number" min="5" max="180" value="30" />
+                        </div>
+                        <div class="col-span-3">
+                            <label>Tonalité</label>
+                            <select id="tone">
+                                <option>Énergique</option>
+                                <option>Pédagogique</option>
+                                <option>Drôle</option>
+                                <option>Inspirant</option>
+                                <option>Cash</option>
+                            </select>
+                        </div>
+                        <div class="col-span-12">
+                            <label>Idées/semences (facultatif)</label>
+                            <textarea id="seeds"
+                                placeholder="Mots-clés, douleur à résoudre, angle, promesse... 1 par ligne"></textarea>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top:10px">
+                        <button class="btn" id="btn-generate">Générer</button>
+                        <button class="btn secondary" id="btn-clear">Effacer</button>
+                        <button class="btn ghost" id="btn-save">Sauver le brief</button>
+                        <button class="btn ghost" id="btn-load">Charger le dernier</button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="card col-span-4">
+                <div class="inner">
+                    <div class="section-title">
+                        <h3>Conseils rapides par plateforme</h3><button class="btn ghost" id="btn-tips">Astuces</button>
+                    </div>
+                    <div id="tips" class="list"></div>
+                </div>
+            </section>
+
+            <!-- KPIs / META -->
+            <section class="card col-span-12">
+                <div class="inner">
+                    <div class="section-title">
+                        <h3>2) Résultats générés</h3>
+                        <div class="row">
+                            <button class="btn ghost" id="btn-copy-all">Copier tout</button>
+                            <button class="btn ghost" id="btn-download">Télécharger (.md)</button>
+                        </div>
+                    </div>
+                    <div class="kpis" id="kpis"></div>
+                </div>
+            </section>
+
+            <!-- OUTPUT COLUMNS -->
+            <section class="card col-span-6" id="col-left">
+                <div class="inner">
+                    <div class="section-title">
+                        <h3>Hooks & Titres</h3><button class="btn ghost" data-target="hooks">Regénérer</button>
+                    </div>
+                    <div id="hooks" class="list"></div>
+
+                    <div class="section-title">
+                        <h3>Structure & Script</h3>
+                        <div class="row">
+                            <button class="btn ghost" data-target="outline">Regénérer</button>
+                            <button class="btn ghost" id="btn-script-copy">Copier le script</button>
+                        </div>
+                    </div>
+                    <pre id="script" class="mono" style="white-space:pre-wrap"></pre>
+
+                    <div class="section-title">
+                        <h3>Check-list de tournage</h3><button class="btn ghost"
+                            data-target="checklist">Regénérer</button>
+                    </div>
+                    <div id="checklist" class="list"></div>
+                </div>
+            </section>
+
+            <section class="card col-span-6" id="col-right">
+                <div class="inner">
+                    <div class="section-title">
+                        <h3>Plan de prises & B‑roll</h3><button class="btn ghost" data-target="shots">Regénérer</button>
+                    </div>
+                    <div id="shots" class="list"></div>
+
+                    <div class="section-title">
+                        <h3>Légende & Hashtags</h3>
+                        <div class="row">
+                            <button class="btn ghost" data-target="caption">Regénérer</button>
+                            <button class="btn ghost" id="btn-caption-copy">Copier la légende</button>
+                        </div>
+                    </div>
+                    <pre id="caption" class="mono" style="white-space:pre-wrap"></pre>
+
+                    <div class="section-title">
+                        <h3>Concepts de miniatures</h3><button class="btn ghost" data-target="thumbs">Regénérer</button>
+                    </div>
+                    <div id="thumbs" class="list"></div>
+                </div>
+            </section>
+
+            <section class="card col-span-12">
+                <div class="inner">
+                    <div class="section-title">
+                        <h3>3) Calendrier & publication</h3>
+                        <div class="row">
+                            <span class="tag"><span>📅</span><span id="plan-meta">—</span></span>
+                            <button class="btn ghost" id="btn-plan">Générer planning 7 jours</button>
+                            <button class="btn ghost" id="btn-plan-copy">Copier planning</button>
+                        </div>
+                    </div>
+                    <div id="calendar" class="list"></div>
+                    <div class="footer">Astuce : programmez vos tournages en lot (batch) et montez juste après pour
+                        rester régulier.</div>
+                </div>
+            </section>
+        </div>
+        <div class="footer">Fabriqué pour VS Code – 100% HTML/CSS/JS. Aucune dépendance externe.</div>
+    </div>
+
+    <script>
+        /* ---------- Utilitaires ---------- */
+        const $ = sel => document.querySelector(sel);
+        const $$ = sel => Array.from(document.querySelectorAll(sel));
+        const rnd = arr => arr[Math.floor(Math.random() * arr.length)];
+        const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
+        const nowISO = () => new Date().toISOString().slice(0, 10);
+
+        function copyText(txt) {
+            navigator.clipboard.writeText(txt).then(() => {
+                toast('Copié dans le presse-papiers');
+            }).catch(() => alert('Impossible de copier'))
+        }
+        function toast(text) {
+            const t = document.createElement('div');
+            t.textContent = text; t.style.cssText = 'position:fixed;left:50%;top:16px;transform:translateX(-50%);background:#11162a;border:1px solid rgba(255,255,255,.2);color:#fff;padding:10px 14px;border-radius:12px;z-index:9999;box-shadow:var(--shadow)';
+            document.body.appendChild(t); setTimeout(() => t.remove(), 1600);
+        }
+
+        /* ---------- Données de base ---------- */
+        const INTROS = [
+            "Stop de scroller.",
+            "Tu veux gagner du temps?",
+            "Personne ne te dit ça :",
+            "3 erreurs qui te freinent :",
+            "Astuce de pro en 30s :",
+            "Le hack que j'aurais aimé connaître :",
+            "La méthode 80/20 pour :",
+        ];
+
+        const FRAMES = [
+            { name: 'Problème → Agiter → Solution', id: 'pas' },
+            { name: 'Liste rapide (Top 3/5)', id: 'list' },
+            { name: 'Avant / Après', id: 'aa' },
+            { name: 'Mythe vs Réalité', id: 'myth' },
+            { name: 'Étapes en 60s', id: 'steps' },
+            { name: 'Étude de cas express', id: 'case' },
+            { name: 'Storytime (accroche → twist)', id: 'story' }
+        ];
+
+        const CHECKLIST = [
+            'Mode avion activé', 'Lentille nettoyée', 'Format vertical 9:16', 'Lumière face', 'Fond simple', 'Mic près de la bouche', 'Sous-titres auto', 'Hook ≤ 3s', 'CTA clair', 'Musique non protégée'
+        ];
+
+        const SHOTS = [
+            'Plan face caméra', 'Gros plan mains', 'Plan détail produit', 'B‑roll ambiance', 'Écran capture (tuto)', 'Plan de coupe réaction', 'Texte à l’écran (kinétique)'
+        ];
+
+        const CTA = [
+            'Abonne-toi pour la suite', 'Like si ça t’aide', 'Dis "OK" en commentaire', 'Partage à un ami', 'Lien en bio pour le guide', 'Commente TON problème', 'Sauvegarde pour plus tard'
+        ];
+
+        const HASHTAGS = {
+            default: ['#pourtoi', '#astuce', '#conseil', '#creation', '#video', '#tiktokfr', '#reelsfr', '#shortsfr'],
+            fitness: ['#fitness', '#workout', '#homeworkout', '#fitfr', '#motivation'],
+            cuisine: ['#recette', '#rapide', '#cuisine', '#mealprep', '#foodfr'],
+            dev: ['#code', '#javascript', '#dev', '#programmation', '#webdev'],
+            voyage: ['#voyage', '#budgettravel', '#astucesvoyage', '#citybreak'],
+            business: ['#business', '#entrepreneur', '#marketing', '#sidehustle', '#productivite']
+        };
+
+        const TIPS = {
+            'TikTok': ["Hook ultra court (≤2s)", "Texte à l'écran large", "Montage nerveux", "Utilise sons tendances"],
+            'Instagram Reels': ["Transitions clean", "Couleurs vives", "Carrousels en complément", "Hashtags 3–5 pertinents"],
+            'YouTube Shorts': ["Valeur pédagogique", "Titres lisibles sans clickbait", "Cross-post vers Long"],
+            'LinkedIn': ["Sous-titres pro", "Ton pédagogique/story", "CTA vers ressource", "Évite musique copyright"],
+            'X (Twitter)': ['Format 30–45s', 'Sous-titres bold', 'Ajoute thread en soutien']
+        };
+
+        /* ---------- Génération ---------- */
+        function getBrief() {
+            return {
+                platform: $('#platform').value,
+                goal: $('#goal').value,
+                niche: ($('#niche').value || 'général').trim(),
+                length: Math.max(5, Math.min(180, Number($('#length').value || 30))),
+                tone: $('#tone').value,
+                seeds: $('#seeds').value.split('\n').map(s => s.trim()).filter(Boolean)
+            }
+        }
+
+        function genHooks(b) {
+            const base = [
+                `${rnd(INTROS)} ${b.niche}:`,
+                `Si ${b.niche} te semble dur, essaye ça`,
+                `En ${b.length}s: ${cap(b.niche)} sans galérer`,
+                `Tu fais encore cette erreur en ${b.niche} ?`,
+                `${cap(b.niche)}: 3 astuces que personne ne t’explique`,
+                `Avant de quitter, écoute ça (${b.niche})`,
+            ];
+            return base.map((t, i) => ({ text: t, kind: i % 2 ? 'hook' : 'titre' }));
+        }
+
+        function genOutline(b) {
+            const frame = rnd(FRAMES);
+            const seg = Math.max(1, Math.round((b.length - 3) / 3));
+            const outline = [
+                `HOOK (0–2s) — ${rnd(INTROS)} ${b.niche}`,
+                `PAIN (0–${seg}s) — problème clair lié à ${b.niche}`,
+                `SOLUTION (${seg}–${2 * seg}s) — 1–3 étapes concrètes`,
+                `PROOF (${2 * seg}–${b.length - 3}s) — mini démonstration / exemple`,
+                `CTA (${b.length - 3}–${b.length}s) — ${rnd(CTA)}`
+            ];
+            return { frame, outline };
+        }
+
+        function genScript(b) {
+            const o = genOutline(b);
+            const lines = [
+                `🎯 Cadre: ${o.frame.name}`,
+                '',
+                ...o.outline
+            ];
+            return lines.join('\n');
+        }
+
+        function guessHashKey(n) {
+            n = n.toLowerCase();
+            if (n.includes('fit')) return 'fitness';
+            if (n.includes('cuis') || n.includes('recette')) return 'cuisine';
+            if (n.includes('dev') || n.includes('code') || n.includes('prog')) return 'dev';
+            if (n.includes('voy')) return 'voyage';
+            if (n.includes('biz') || n.includes('mark') || n.includes('entrepr')) return 'business';
+            return 'default';
+        }
+
+        function genCaption(b) {
+            const key = guessHashKey(b.niche);
+            const baseTags = (HASHTAGS[key] || HASHTAGS.default);
+            const chosen = Array.from(new Set([rnd(baseTags), rnd(baseTags), rnd(baseTags), rnd(HASHTAGS.default), `#${b.niche.replace(/[^a-z0-9]+/gi, '').toLowerCase()}`])).slice(0, 5);
+            const seedLine = b.seeds.length ? `\n\nMots-clés: ${b.seeds.join(', ')}` : '';
+            const cta = rnd(CTA);
+            const captext = `Ce que personne ne t’explique sur ${b.niche} en ${b.length}s.\n${b.tone === 'Drôle' ? '(Oui, même ta grand-mère peut le faire 😉)' : ''}\n\n${cta}\n${chosen.join(' ')}${seedLine}`;
+            return captext;
+        }
+
+        function genShots(b) {
+            const seq = [
+                'Hook: visage cadrage poitrine + sous-titres bold',
+                'Cut 1: démonstration rapide',
+                'B‑roll 1: détail / main / écran',
+                'Cut 2: astuce #2 en texte',
+                'B‑roll 2: réaction / résultat',
+                'CTA final + panneau texte'
+            ];
+            return seq.map((s, i) => `${i + 1}. ${s} (${rnd(SHOTS)})`);
+        }
+
+        function genChecklist() {
+            return CHECKLIST.map((c, i) => `☐ ${c}`);
+        }
+
+        function genThumbs(b) {
+            return [
+                `Gros texte: "${cap(b.niche)} en ${b.length}s" + visage expressif`,
+                `Avant/Après: split screen ${b.niche}`,
+                `Mythe vs Réalité: 3 mots max`,
+                `Objet-clé en gros plan + flèche + 1 chiffre`
+            ];
+        }
+
+        function genKpis(b) {
+            return [
+                { k: 'Durée cible', v: b.length + 's' },
+                { k: 'Cadre', v: rnd(FRAMES).name },
+                { k: 'Tonalité', v: b.tone },
+                { k: 'Objectif', v: b.goal }
+            ];
+        }
+
+        function genPlan(b) {
+            const days = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
+            const now = new Date();
+            const schedule = [];
+            for (let i = 0; i < 7; i++) {
+                const d = new Date(now); d.setDate(d.getDate() + i);
+                const label = `${days[d.getDay() === 0 ? 6 : d.getDay() - 1]} ${d.toLocaleDateString('fr-FR')}`;
+                const theme = rnd(['Astuce', 'Story', 'Étude de cas', 'FAQ', 'Mythe vs Réalité', 'Avant/Après']);
+                schedule.push({ date: label, idea: `${theme} — ${cap(b.niche)}`, cta: rnd(CTA) });
+            }
+            return schedule;
+        }
+
+        /* ---------- Rendu ---------- */
+        function renderList(el, items) {
+            el.innerHTML = items.map(t => `<div class="item">${t}</div>`).join('');
+        }
+
+        function render() {
+            const b = getBrief();
+            const hooks = genHooks(b).map(h => (h.kind === 'hook' ? `🔥 ` : '📝 ') + h.text);
+            const script = genScript(b);
+            const shots = genShots(b);
+            const checklist = genChecklist();
+            const caption = genCaption(b);
+            const thumbs = genThumbs(b);
+            const kpis = genKpis(b);
+
+            $('#hooks').innerHTML = hooks.map(t => `<div class="item">${t}</div>`).join('');
+            $('#script').textContent = script;
+            renderList($('#shots'), shots);
+            renderList($('#checklist'), checklist);
+            $('#caption').textContent = caption;
+            renderList($('#thumbs'), thumbs);
+
+            $('#kpis').innerHTML = kpis.map(k => `<div class="kpi"><div class="k">${k.k}</div><div class="v">${k.v}</div></div>`).join('');
+
+            // tips
+            const t = TIPS[b.platform] || [];
+            $('#tips').innerHTML = t.map(x => `<div class="item">${x}</div>`).join('');
+
+            $('#plan-meta').textContent = `${b.platform} • ${cap(b.niche)} • ${b.tone}`;
+        }
+
+        function exportAll() {
+            const b = getBrief();
+            const plan = genPlan(b);
+            const md = `# Idées & Kit vidéo (généré ${nowISO()})\n\n` +
+                `**Plateforme:** ${b.platform}  \n**Objectif:** ${b.goal}  \n**Niche:** ${b.niche}  \n**Durée:** ${b.length}s  \n**Tonalité:** ${b.tone}\n\n` +
+                `## Hooks & Titres\n` + $$('#hooks .item').map(i => `- ${i.textContent}`).join('\n') + '\n\n' +
+                `## Structure & Script\n\n` + $('#script').textContent + '\n\n' +
+                `## Plan de prises & B‑roll\n` + $$('#shots .item').map(i => `- ${i.textContent}`).join('\n') + '\n\n' +
+                `## Check-list de tournage\n` + $$('#checklist .item').map(i => `- ${i.textContent}`).join('\n') + '\n\n' +
+                `## Légende & Hashtags\n\n` + $('#caption').textContent + '\n\n' +
+                `## Concepts de miniatures\n` + $$('#thumbs .item').map(i => `- ${i.textContent}`).join('\n') + '\n\n' +
+                `## Planning 7 jours\n` + plan.map(p => `- ${p.date}: ${p.idea} — ${p.cta}`).join('\n');
+
+            const blob = new Blob([md], { type: 'text/markdown' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `kit-video-${nowISO()}.md`;
+            a.click();
+            URL.revokeObjectURL(a.href);
+        }
+
+        /* ---------- Événements ---------- */
+        $('#btn-generate').addEventListener('click', render);
+        $('#btn-clear').addEventListener('click', () => {
+            ['niche', 'seeds'].forEach(id => $("#" + id).value = '');
+            $('#length').value = 30; $('#tone').value = 'Énergique'; $('#goal').value = 'awareness';
+            render();
+        });
+
+        $('#btn-save').addEventListener('click', () => {
+            localStorage.setItem('brief', JSON.stringify(getBrief()));
+            toast('Brief sauvegardé');
+        });
+        $('#btn-load').addEventListener('click', () => {
+            const b = JSON.parse(localStorage.getItem('brief') || 'null');
+            if (!b) { toast('Aucun brief sauvegardé'); return; }
+            $('#platform').value = b.platform; $('#goal').value = b.goal; $('#niche').value = b.niche; $('#length').value = b.length; $('#tone').value = b.tone; $('#seeds').value = (b.seeds || []).join('\n');
+            render(); toast('Brief chargé');
+        });
+
+        $('#btn-exemple').addEventListener('click', () => {
+            $('#platform').value = 'TikTok';
+            $('#goal').value = 'community';
+            $('#niche').value = 'cuisine rapide';
+            $('#length').value = 28;
+            $('#tone').value = 'Pédagogique';
+            $('#seeds').value = '5 ingrédients\n15 minutes\nbudget étudiant';
+            render();
+        });
+
+        $('[data-target="hooks"]').addEventListener('click', render);
+        $('[data-target="outline"]').addEventListener('click', () => { $('#script').textContent = genScript(getBrief()); });
+        $('[data-target="shots"]').addEventListener('click', () => { renderList($('#shots'), genShots(getBrief())); });
+        $('[data-target="checklist"]').addEventListener('click', () => { renderList($('#checklist'), genChecklist()); });
+        $('[data-target="caption"]').addEventListener('click', () => { $('#caption').textContent = genCaption(getBrief()); });
+        $('[data-target="thumbs"]').addEventListener('click', () => { renderList($('#thumbs'), genThumbs(getBrief())); });
+
+        $('#btn-script-copy').addEventListener('click', () => copyText($('#script').textContent));
+        $('#btn-caption-copy').addEventListener('click', () => copyText($('#caption').textContent));
+        $('#btn-copy-all').addEventListener('click', () => {
+            const txt = document.body.innerText; copyText(txt);
+        });
+        $('#btn-download').addEventListener('click', exportAll);
+
+        $('#btn-plan').addEventListener('click', () => {
+            const plan = genPlan(getBrief());
+            $('#calendar').innerHTML = plan.map(p => `<div class="item"><b>${p.date}</b> — ${p.idea} <span class="tag">${p.cta}</span></div>`).join('');
+        });
+        $('#btn-plan-copy').addEventListener('click', () => {
+            const txt = $$('#calendar .item').map(i => i.textContent).join('\n');
+            if (!txt) return toast('Générez le planning d’abord');
+            copyText(txt);
+        });
+
+        $('#btn-tips').addEventListener('click', () => {
+            const p = $('#platform').value; const t = TIPS[p] || []; $('#tips').innerHTML = t.map(x => `<div class="item">${x}</div>`).join(''); toast('Astuces mises à jour');
+        });
+
+        // rendu initial
+        render();
+    </script>
+</body>
+
+</html>
